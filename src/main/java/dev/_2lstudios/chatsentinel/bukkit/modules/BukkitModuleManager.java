@@ -70,6 +70,6 @@ public class BukkitModuleManager extends ModuleManager {
 		getSyntaxModule().loadData(configYml.getBoolean("syntax.enabled"), configYml.getInt("syntax.warn.max"),
 				configYml.getString("syntax.warn.notification"),
 				configYml.getStringList("syntax.whitelist").toArray(new String[0]),
-				configYml.getStringList("syntax.punisments").toArray(new String[0]));
+				configYml.getStringList("syntax.punishments").toArray(new String[0]));
 	}
 }

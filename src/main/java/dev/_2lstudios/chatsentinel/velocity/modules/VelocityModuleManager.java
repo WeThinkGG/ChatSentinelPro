@@ -89,7 +89,7 @@ public class VelocityModuleManager extends ModuleManager {
 				configYml.node("syntax", "whitelist").childrenList().stream()
 						.map(ConfigurationNode::getString)
 						.toArray(String[]::new),
-				configYml.node("syntax", "punisments").childrenList().stream()
+				configYml.node("syntax", "punishments").childrenList().stream()
 						.map(ConfigurationNode::getString)
 						.toArray(String[]::new));
 	}
