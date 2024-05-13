@@ -4,7 +4,7 @@ import dev._2lstudios.chatsentinel.shared.chat.ChatEventResult;
 import dev._2lstudios.chatsentinel.shared.chat.ChatPlayer;
 import dev._2lstudios.chatsentinel.shared.utils.PlaceholderUtil;
 
-public abstract class Module {
+public abstract class ModerationModule {
 	private boolean enabled = true;
     private int maxWarns = 0;
     private String warnNotification = null;

@@ -16,11 +16,11 @@ import dev._2lstudios.chatsentinel.bukkit.utils.ConfigUtil;
 import dev._2lstudios.chatsentinel.shared.chat.ChatEventResult;
 import dev._2lstudios.chatsentinel.shared.chat.ChatPlayer;
 import dev._2lstudios.chatsentinel.shared.chat.ChatPlayerManager;
-import dev._2lstudios.chatsentinel.shared.modules.CooldownModule;
+import dev._2lstudios.chatsentinel.shared.modules.CooldownModerationModule;
 import dev._2lstudios.chatsentinel.shared.modules.GeneralModule;
 import dev._2lstudios.chatsentinel.shared.modules.MessagesModule;
-import dev._2lstudios.chatsentinel.shared.modules.Module;
-import dev._2lstudios.chatsentinel.shared.modules.SyntaxModule;
+import dev._2lstudios.chatsentinel.shared.modules.ModerationModule;
+import dev._2lstudios.chatsentinel.shared.modules.SyntaxModerationModule;
 
 public class ChatSentinel extends JavaPlugin {
 	// Static instance
@@ -67,13 +67,13 @@ public class ChatSentinel extends JavaPlugin {
 		}, 20L, 20L);
 	}
 
-	public void dispatchCommmands(Module module, ChatPlayer chatPlayer, String[][] placeholders) {
+	public void dispatchCommmands(ModerationModule moderationModule, ChatPlayer chatPlayer, String[][] placeholders) {
 		Server server = getServer();
 
 		server.getScheduler().runTask(this, () -> {
 			ConsoleCommandSender console = server.getConsoleSender();
 
-			for (String command : module.getCommands(placeholders)) {
+			for (String command : moderationModule.getCommands(placeholders)) {
 				server.dispatchCommand(console, command);
 			}
 		});
@@ -81,9 +81,9 @@ public class ChatSentinel extends JavaPlugin {
 		chatPlayer.clearWarns();
 	}
 
-	public void dispatchNotification(Module module, String[][] placeholders) {
+	public void dispatchNotification(ModerationModule moderationModule, String[][] placeholders) {
 		Server server = getServer();
-		String notificationMessage = module.getWarnNotification(placeholders);
+		String notificationMessage = moderationModule.getWarnNotification(placeholders);
 
 		if (notificationMessage != null && !notificationMessage.isEmpty()) {
 			for (Player player1 : server.getOnlinePlayers()) {
@@ -95,10 +95,10 @@ public class ChatSentinel extends JavaPlugin {
 		}
 	}
 
-	public String[][] getPlaceholders(Player player, ChatPlayer chatPlayer, Module module, String message) {
+	public String[][] getPlaceholders(Player player, ChatPlayer chatPlayer, ModerationModule moderationModule, String message) {
 		String playerName = player.getName();
-		int warns = chatPlayer.getWarns(module);
-		int maxWarns = module.getMaxWarns();
+		int warns = chatPlayer.getWarns(moderationModule);
+		int maxWarns = moderationModule.getMaxWarns();
 		float remainingTime = moduleManager.getCooldownModule().getRemainingTime(chatPlayer, message);
 
 		return new String[][] {
@@ -107,8 +107,8 @@ public class ChatSentinel extends JavaPlugin {
 		};
 	}
 
-	public void sendWarning(String[][] placeholders, Module module, Player player, String lang) {
-		String warnMessage = moduleManager.getMessagesModule().getWarnMessage(placeholders, lang, module.getName());
+	public void sendWarning(String[][] placeholders, ModerationModule moderationModule, Player player, String lang) {
+		String warnMessage = moduleManager.getMessagesModule().getWarnMessage(placeholders, lang, moderationModule.getName());
 
 		if (warnMessage != null && !warnMessage.isEmpty()) {
 			player.sendMessage(warnMessage);
@@ -120,7 +120,7 @@ public class ChatSentinel extends JavaPlugin {
 		MessagesModule messagesModule = moduleManager.getMessagesModule();
 		String playerName = player.getName();
 		String lang = chatPlayer.getLocale();
-		Module[] modulesToProcess = {
+		ModerationModule[] moderationModulesToProcess = {
 				moduleManager.getSyntaxModule(),
 				moduleManager.getCapsModule(),
 				moduleManager.getCooldownModule(),
@@ -128,13 +128,13 @@ public class ChatSentinel extends JavaPlugin {
 				moduleManager.getBlacklistModule()
 		};
 
-		for (Module module : modulesToProcess) {
+		for (ModerationModule moderationModule : moderationModulesToProcess) {
 			// Do not check annormal commands (unless syntax or cooldown)
 			boolean isCommmand = originalMessage.startsWith("/");
 			boolean isNormalCommmand = ChatSentinel.getInstance().getModuleManager().getGeneralModule()
 					.isCommand(originalMessage);
-			if (!(module instanceof SyntaxModule) &&
-					!(module instanceof CooldownModule) &&
+			if (!(moderationModule instanceof SyntaxModerationModule) &&
+					!(moderationModule instanceof CooldownModerationModule) &&
 					isCommmand &&
 					!isNormalCommmand) {
 				continue;
@@ -144,32 +144,32 @@ public class ChatSentinel extends JavaPlugin {
 			String message = finalResult.getMessage();
 
 			// Check if player has bypass
-			if (player.hasPermission(module.getBypassPermission())) {
+			if (player.hasPermission(moderationModule.getBypassPermission())) {
 				continue;
 			}
 
 			// Process
-			ChatEventResult result = module.processEvent(chatPlayer, messagesModule, playerName, message, lang);
+			ChatEventResult result = moderationModule.processEvent(chatPlayer, messagesModule, playerName, message, lang);
 
 			// Skip result
 			if (result != null) {
 				// Add warning
-				chatPlayer.addWarn(module);
+				chatPlayer.addWarn(moderationModule);
 
 				// Get placeholders
-				String[][] placeholders = ChatSentinel.getInstance().getPlaceholders(player, chatPlayer, module,
+				String[][] placeholders = ChatSentinel.getInstance().getPlaceholders(player, chatPlayer, moderationModule,
 						message);
 
 				// Send warning
-				ChatSentinel.getInstance().sendWarning(placeholders, module, player, lang);
+				ChatSentinel.getInstance().sendWarning(placeholders, moderationModule, player, lang);
 
 				// Send punishment comamnds
-				if (module.hasExceededWarns(chatPlayer)) {
-					ChatSentinel.getInstance().dispatchCommmands(module, chatPlayer, placeholders);
+				if (moderationModule.hasExceededWarns(chatPlayer)) {
+					ChatSentinel.getInstance().dispatchCommmands(moderationModule, chatPlayer, placeholders);
 				}
 
 				// Send admin notification
-				ChatSentinel.getInstance().dispatchNotification(module, placeholders);
+				ChatSentinel.getInstance().dispatchNotification(moderationModule, placeholders);
 
 				// Update message
 				finalResult.setMessage(result.getMessage());

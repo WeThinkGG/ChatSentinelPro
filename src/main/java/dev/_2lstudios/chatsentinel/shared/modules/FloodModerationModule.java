@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 import dev._2lstudios.chatsentinel.shared.chat.ChatEventResult;
 import dev._2lstudios.chatsentinel.shared.chat.ChatPlayer;
 
-public class FloodModule extends Module {
+public class FloodModerationModule extends ModerationModule {
 	private boolean replace;
 	private Pattern pattern;
 
