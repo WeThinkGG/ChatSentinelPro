@@ -46,7 +46,7 @@ public class ChatListener {
 		if (finalResult.isCancelled()) {
 			event.setResult(PlayerChatEvent.ChatResult.denied());
 		} else {
-			new PlayerChatEvent(player, finalResult.getMessage());
+			event.setResult(PlayerChatEvent.ChatResult.message(finalResult.getMessage()));
 		}
 
 		// Set last message
