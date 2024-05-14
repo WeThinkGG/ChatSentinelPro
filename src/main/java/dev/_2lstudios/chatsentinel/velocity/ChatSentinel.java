@@ -100,7 +100,8 @@ public class ChatSentinel {
 
 		if (notificationMessage != null && !notificationMessage.isEmpty()) {
 			for (Player player1 : server.getAllPlayers()) {
-				if (player1.hasPermission("chatsentinel.notify"))
+				ChatPlayer chatPlayer = chatPlayerManager.getPlayer(player1);
+				if (player1.hasPermission("chatsentinel.notify") && chatPlayer.isNotify())
 					player1.sendMessage(Component.text(notificationMessage));
 			}
 
