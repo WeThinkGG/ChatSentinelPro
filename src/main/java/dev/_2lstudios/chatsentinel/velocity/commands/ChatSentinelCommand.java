@@ -10,6 +10,12 @@ import dev._2lstudios.chatsentinel.shared.modules.MessagesModule;
 import dev._2lstudios.chatsentinel.velocity.modules.VelocityModuleManager;
 import net.kyori.adventure.text.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 public class ChatSentinelCommand implements SimpleCommand {
 	private final ChatPlayerManager chatPlayerManager;
 	private final VelocityModuleManager moduleManager;
@@ -23,6 +29,17 @@ public class ChatSentinelCommand implements SimpleCommand {
 
 	private void sendMessage(CommandSource sender, String message) {
 		sender.sendMessage(Component.text(message));
+	}
+
+	@Override
+	public boolean hasPermission(final Invocation invocation) {
+		return invocation.source().hasPermission("chatsentinel.admin");
+	}
+
+	@Override
+	public CompletableFuture<List<String>> suggestAsync(final Invocation invocation) {
+		return CompletableFuture.completedFuture(Stream.of("help", "reload", "clear", "notify")
+				.collect(Collectors.toCollection(ArrayList::new)));
 	}
 
 	@Override
