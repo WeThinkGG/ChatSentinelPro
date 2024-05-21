@@ -10,6 +10,7 @@ import dev._2lstudios.chatsentinel.shared.chat.ChatPlayerManager;
 import dev._2lstudios.chatsentinel.shared.modules.MessagesModule;
 import dev._2lstudios.chatsentinel.velocity.modules.VelocityModuleManager;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ public class ChatSentinelCommand implements SimpleCommand {
 	}
 
 	private void sendMessage(CommandSource sender, String message) {
-		sender.sendMessage(Component.text(message));
+		sender.sendMessage(LegacyComponentSerializer.legacySection().deserialize(message));
 	}
 
 	@Override

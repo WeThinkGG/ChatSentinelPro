@@ -26,6 +26,7 @@ import dev._2lstudios.chatsentinel.velocity.utils.ConfigUtil;
 import dev._2lstudios.chatsentinel.velocity.utils.Constants;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import net.kyori.adventure.text.serializer.ComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import java.nio.file.Path;
@@ -109,7 +110,7 @@ public class ChatSentinel {
                 player.ifPresent(player1 -> player1.sendMessage(Component.text(notificationMessage)));
 			}
 
-			logger.info(LegacyComponentSerializer.legacyAmpersand().deserialize(notificationMessage));
+			logger.info(LegacyComponentSerializer.legacySection().deserialize(notificationMessage));
 		}
 	}
 
