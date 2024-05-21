@@ -6,12 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import dev._2lstudios.chatsentinel.shared.modules.Module;
+import dev._2lstudios.chatsentinel.shared.modules.ModerationModule;
 
 public class ChatPlayer {
     private int historySize = 3;
     private UUID uuid;
-    private Map<Module, Integer> warns;
+    private Map<ModerationModule, Integer> warns;
     private Deque<String> lastMessages;
     private String locale = null;
     private long lastMessageTime;
@@ -24,14 +24,14 @@ public class ChatPlayer {
         this.lastMessageTime = 0;
     }
 
-    public int getWarns(Module module) {
-        return this.warns.getOrDefault(module, 0);
+    public int getWarns(ModerationModule moderationModule) {
+        return this.warns.getOrDefault(moderationModule, 0);
     }
 
-    public int addWarn(Module module) {
-        int warns = this.warns.getOrDefault(module, 0) + 1;
+    public int addWarn(ModerationModule moderationModule) {
+        int warns = this.warns.getOrDefault(moderationModule, 0) + 1;
 
-        this.warns.put(module, warns);
+        this.warns.put(moderationModule, warns);
 
         return warns;
     }

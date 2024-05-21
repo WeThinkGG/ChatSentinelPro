@@ -3,7 +3,7 @@ package dev._2lstudios.chatsentinel.shared.modules;
 import dev._2lstudios.chatsentinel.shared.chat.ChatEventResult;
 import dev._2lstudios.chatsentinel.shared.chat.ChatPlayer;
 
-public class CapsModule extends Module {
+public class CapsModerationModule extends ModerationModule {
 	private boolean replace;
 	private int maxCaps;
 

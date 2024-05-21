@@ -1,5 +1,6 @@
 package dev._2lstudios.chatsentinel.bukkit.commands;
 
+import dev._2lstudios.chatsentinel.shared.chat.ChatNotificationManager;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,11 +14,13 @@ import dev._2lstudios.chatsentinel.shared.modules.MessagesModule;
 
 public class ChatSentinelCommand implements CommandExecutor {
 	private ChatPlayerManager chatPlayerManager;
+	private ChatNotificationManager chatNotificationManager;
 	private BukkitModuleManager moduleManager;
 	private Server server;
 
-	public ChatSentinelCommand(ChatPlayerManager chatPlayerManager, BukkitModuleManager moduleManager, Server server) {
+	public ChatSentinelCommand(ChatPlayerManager chatPlayerManager, ChatNotificationManager chatNotificationManager, BukkitModuleManager moduleManager, Server server) {
 		this.chatPlayerManager = chatPlayerManager;
+		this.chatNotificationManager = chatNotificationManager;
 		this.moduleManager = moduleManager;
 		this.server = server;
 	}
@@ -44,14 +47,18 @@ public class ChatSentinelCommand implements CommandExecutor {
 
 				sender.sendMessage(messagesModule.getReload(lang));
 			} else if (args[0].equalsIgnoreCase("notify")) {
-				boolean notify = !chatPlayer.isNotify();
-				
-				chatPlayer.setNotify(notify);
+				if (sender instanceof Player) {
+					boolean notify = chatNotificationManager.containsPlayer(chatPlayer);
 
-				if (notify) {
-					sender.sendMessage(messagesModule.getNotifyEnabled(lang));
+					if (notify) {
+						chatNotificationManager.removePlayer(chatPlayer);
+						sender.sendMessage(messagesModule.getNotifyDisabled(lang));
+					} else {
+						chatNotificationManager.addPlayer(chatPlayer);
+						sender.sendMessage(messagesModule.getNotifyEnabled(lang));
+					}
 				} else {
-					sender.sendMessage(messagesModule.getNotifyDisabled(lang));
+					sender.sendMessage(messagesModule.getUnknownCommand(lang));
 				}
 			} else if (args[0].equalsIgnoreCase("clear")) {
 				StringBuilder emptyLines = new StringBuilder();

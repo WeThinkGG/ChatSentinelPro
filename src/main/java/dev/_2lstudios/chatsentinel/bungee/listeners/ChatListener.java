@@ -2,6 +2,7 @@ package dev._2lstudios.chatsentinel.bungee.listeners;
 
 import dev._2lstudios.chatsentinel.bungee.ChatSentinel;
 import dev._2lstudios.chatsentinel.shared.chat.ChatEventResult;
+import dev._2lstudios.chatsentinel.shared.chat.ChatNotificationManager;
 import dev._2lstudios.chatsentinel.shared.chat.ChatPlayer;
 import dev._2lstudios.chatsentinel.shared.chat.ChatPlayerManager;
 import net.md_5.bungee.api.connection.Connection;
@@ -13,9 +14,11 @@ import net.md_5.bungee.event.EventPriority;
 
 public class ChatListener implements Listener {
 	private ChatPlayerManager chatPlayerManager;
+	private ChatNotificationManager chatNotificationManager;
 
-	public ChatListener(ChatPlayerManager chatPlayerManager) {
+	public ChatListener(ChatPlayerManager chatPlayerManager, ChatNotificationManager chatNotificationManager) {
 		this.chatPlayerManager = chatPlayerManager;
+		this.chatNotificationManager = chatNotificationManager;
 	}
 
 	@EventHandler(priority = EventPriority.LOW)
@@ -46,7 +49,7 @@ public class ChatListener implements Listener {
 		ChatPlayer chatPlayer = chatPlayerManager.getPlayer(player);
 
 		// Process the event
-		ChatEventResult finalResult = ChatSentinel.getInstance().processEvent(chatPlayer, player, message);
+		ChatEventResult finalResult = ChatSentinel.getInstance().processEvent(chatPlayer, player, message, chatNotificationManager);
 
 		// Apply modifiers to event
 		if (finalResult.isCancelled()) {
