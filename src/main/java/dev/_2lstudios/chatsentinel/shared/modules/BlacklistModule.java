@@ -11,6 +11,7 @@ public class BlacklistModule extends Module {
 
 	private boolean fakeMessage;
 	private boolean hideWords;
+  private boolean blockRawMessage;
 	private Pattern pattern;
 
 	public BlacklistModule(ModuleManager moduleManager) {
@@ -18,7 +19,7 @@ public class BlacklistModule extends Module {
 	}
 
 	public void loadData(boolean enabled, boolean fakeMessage, boolean hideWords, int maxWarns,
-			String warnNotification, String[] commands, String[] patterns) {
+        String warnNotification, String[] commands, String[] patterns, boolean blockRawMessage) {
 		setEnabled(enabled);
 		setMaxWarns(maxWarns);
 		setWarnNotification(warnNotification);
@@ -26,6 +27,7 @@ public class BlacklistModule extends Module {
 		this.fakeMessage = fakeMessage;
 		this.hideWords = hideWords;
 		this.pattern = PatternUtil.compile(patterns);
+		this.blockRawMessage = blockRawMessage;
 	}
 
 	public boolean isFakeMessage() {
@@ -34,6 +36,10 @@ public class BlacklistModule extends Module {
 
 	public boolean isHideWords() {
 		return this.hideWords;
+	}
+
+	public boolean isBlockRawMessage() {
+		return this.blockRawMessage;
 	}
 
 	public Pattern getPattern() {
@@ -80,7 +86,7 @@ public class BlacklistModule extends Module {
 				hide = true;
 			} else if (isHideWords()) {
 				message = pattern.matcher(message).replaceAll("***");
-			} else {
+			} else if (isBlockRawMessage()) {
 				cancelled = true;
 			}
 
