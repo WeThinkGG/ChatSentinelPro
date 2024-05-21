@@ -4,12 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.bukkit.entity.Player;
-
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ChatPlayerManager {
-    private Map<UUID, ChatPlayer> chatPlayers = new HashMap<>();
+    private final Map<UUID, ChatPlayer> chatPlayers = new HashMap<>();
 
     public ChatPlayer getPlayer(UUID uuid) {
         return chatPlayers.computeIfAbsent(uuid, ChatPlayer::new);
@@ -19,7 +17,11 @@ public class ChatPlayerManager {
         return getPlayer(player.getUniqueId());
     }
 
-    public ChatPlayer getPlayer(Player player) {
+    public ChatPlayer getPlayer(org.bukkit.entity.Player player) {
+        return getPlayer(player.getUniqueId());
+    }
+
+    public ChatPlayer getPlayer(com.velocitypowered.api.proxy.Player player) {
         return getPlayer(player.getUniqueId());
     }
 }

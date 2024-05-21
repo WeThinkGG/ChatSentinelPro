@@ -1,43 +1,43 @@
 package dev._2lstudios.chatsentinel.shared.modules;
 
 public abstract class ModuleManager {
-	private CapsModule capsModule;
-	private CooldownModule cooldownModule;
-	private FloodModule floodModule;
+	private CapsModerationModule capsModule;
+	private CooldownModerationModule cooldownModule;
+	private FloodModerationModule floodModule;
 	private MessagesModule messagesModule;
 	private GeneralModule generalModule;
-	private BlacklistModule blacklistModule;
-	private SyntaxModule syntaxModule;
+	private BlacklistModerationModule blacklistModule;
+	private SyntaxModerationModule syntaxModule;
 	private WhitelistModule whitelistModule;
 
 	public ModuleManager() {
-		this.capsModule = new CapsModule();
-		this.cooldownModule = new CooldownModule();
-		this.floodModule = new FloodModule();
-		this.blacklistModule = new BlacklistModule(this);
-		this.syntaxModule = new SyntaxModule();
+		this.capsModule = new CapsModerationModule();
+		this.cooldownModule = new CooldownModerationModule();
+		this.floodModule = new FloodModerationModule();
+		this.blacklistModule = new BlacklistModerationModule(this);
+		this.syntaxModule = new SyntaxModerationModule();
 		this.messagesModule = new MessagesModule();
 		this.generalModule = new GeneralModule();
 		this.whitelistModule = new WhitelistModule();
 	}
 
-	public CooldownModule getCooldownModule() {
+	public CooldownModerationModule getCooldownModule() {
 		return cooldownModule;
 	}
 
-	public CapsModule getCapsModule() {
+	public CapsModerationModule getCapsModule() {
 		return capsModule;
 	}
 
-	public FloodModule getFloodModule() {
+	public FloodModerationModule getFloodModule() {
 		return floodModule;
 	}
 
-	public BlacklistModule getBlacklistModule() {
+	public BlacklistModerationModule getBlacklistModule() {
 		return blacklistModule;
 	}
 
-	public SyntaxModule getSyntaxModule() {
+	public SyntaxModerationModule getSyntaxModule() {
 		return syntaxModule;
 	}
 

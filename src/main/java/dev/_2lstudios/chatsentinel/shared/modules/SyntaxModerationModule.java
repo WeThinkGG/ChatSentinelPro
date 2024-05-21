@@ -3,7 +3,7 @@ package dev._2lstudios.chatsentinel.shared.modules;
 import dev._2lstudios.chatsentinel.shared.chat.ChatEventResult;
 import dev._2lstudios.chatsentinel.shared.chat.ChatPlayer;
 
-public class SyntaxModule extends Module {
+public class SyntaxModerationModule extends ModerationModule {
 	private String[] whitelist;
 
 	public void loadData(boolean enabled, int maxWarns, String warnNotification,

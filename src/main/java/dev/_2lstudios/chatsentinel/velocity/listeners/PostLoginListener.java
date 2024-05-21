@@ -1,18 +1,17 @@
-package dev._2lstudios.chatsentinel.bungee.listeners;
+package dev._2lstudios.chatsentinel.velocity.listeners;
 
+import com.velocitypowered.api.event.Subscribe;
+import com.velocitypowered.api.event.connection.PostLoginEvent;
+import com.velocitypowered.api.proxy.Player;
 import dev._2lstudios.chatsentinel.shared.chat.ChatNotificationManager;
 import dev._2lstudios.chatsentinel.shared.chat.ChatPlayer;
 import dev._2lstudios.chatsentinel.shared.chat.ChatPlayerManager;
 import dev._2lstudios.chatsentinel.shared.modules.GeneralModule;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.api.event.PostLoginEvent;
-import net.md_5.bungee.api.plugin.Listener;
-import net.md_5.bungee.event.EventHandler;
 
-public class PostLoginListener implements Listener {
-    private GeneralModule generalModule;
-    private ChatPlayerManager chatPlayerManager;
-    private ChatNotificationManager chatNotificationManager;
+public class PostLoginListener {
+    private final GeneralModule generalModule;
+    private final ChatPlayerManager chatPlayerManager;
+    private final ChatNotificationManager chatNotificationManager;
 
     public PostLoginListener(GeneralModule generalModule, ChatPlayerManager chatPlayerManager, ChatNotificationManager chatNotificationManager) {
         this.generalModule = generalModule;
@@ -20,9 +19,9 @@ public class PostLoginListener implements Listener {
         this.chatNotificationManager = chatNotificationManager;
     }
 
-    @EventHandler
+    @Subscribe
     public void onPostLogin(PostLoginEvent event) {
-        ProxiedPlayer player = event.getPlayer();
+        Player player = event.getPlayer();
         ChatPlayer chatPlayer = chatPlayerManager.getPlayer(player);
 
         if (chatPlayer != null) {
@@ -35,7 +34,7 @@ public class PostLoginListener implements Listener {
             }
 
             // Add the nickname
-            generalModule.addNickname(player.getName());
+            generalModule.addNickname(player.getUsername());
         }
     }
 }

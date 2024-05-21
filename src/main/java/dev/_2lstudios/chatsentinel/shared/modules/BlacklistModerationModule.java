@@ -6,7 +6,7 @@ import dev._2lstudios.chatsentinel.shared.chat.ChatEventResult;
 import dev._2lstudios.chatsentinel.shared.chat.ChatPlayer;
 import dev._2lstudios.chatsentinel.shared.utils.PatternUtil;
 
-public class BlacklistModule extends Module {
+public class BlacklistModerationModule extends ModerationModule {
 	private ModuleManager moduleManager;
 
 	private boolean fakeMessage;
@@ -14,7 +14,7 @@ public class BlacklistModule extends Module {
   private boolean blockRawMessage;
 	private Pattern pattern;
 
-	public BlacklistModule(ModuleManager moduleManager) {
+	public BlacklistModerationModule(ModuleManager moduleManager) {
 		this.moduleManager = moduleManager;
 	}
 
