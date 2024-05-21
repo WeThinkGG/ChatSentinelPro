@@ -9,6 +9,7 @@ import dev._2lstudios.chatsentinel.bungee.listeners.PostLoginListener;
 import dev._2lstudios.chatsentinel.bungee.modules.BungeeModuleManager;
 import dev._2lstudios.chatsentinel.bungee.utils.ConfigUtil;
 import dev._2lstudios.chatsentinel.shared.chat.ChatEventResult;
+import dev._2lstudios.chatsentinel.shared.chat.ChatNotificationManager;
 import dev._2lstudios.chatsentinel.shared.chat.ChatPlayer;
 import dev._2lstudios.chatsentinel.shared.chat.ChatPlayerManager;
 import dev._2lstudios.chatsentinel.shared.modules.CooldownModerationModule;
@@ -56,13 +57,14 @@ public class ChatSentinel extends Plugin {
 		moduleManager = new BungeeModuleManager(configUtil);
 		GeneralModule generalModule = moduleManager.getGeneralModule();
 		ChatPlayerManager chatPlayerManager = new ChatPlayerManager();
+		ChatNotificationManager chatNotificationManager = new ChatNotificationManager();
 		PluginManager pluginManager = server.getPluginManager();
 
-		pluginManager.registerListener(this, new ChatListener(chatPlayerManager));
-		pluginManager.registerListener(this, new PlayerDisconnectListener(generalModule));
-		pluginManager.registerListener(this, new PostLoginListener(generalModule, chatPlayerManager));
+		pluginManager.registerListener(this, new ChatListener(chatPlayerManager, chatNotificationManager));
+		pluginManager.registerListener(this, new PlayerDisconnectListener(generalModule, chatPlayerManager, chatNotificationManager));
+		pluginManager.registerListener(this, new PostLoginListener(generalModule, chatPlayerManager, chatNotificationManager));
 
-		pluginManager.registerCommand(this, new ChatSentinelCommand(chatPlayerManager, moduleManager, server));
+		pluginManager.registerCommand(this, new ChatSentinelCommand(chatPlayerManager, chatNotificationManager, moduleManager, server));
 
 		getProxy().getScheduler().schedule(this, () -> {
 			if (generalModule.needsNicknameCompile()) {
@@ -85,14 +87,16 @@ public class ChatSentinel extends Plugin {
 		chatPlayer.clearWarns();
 	}
 
-	public void dispatchNotification(ModerationModule moderationModule, String[][] placeholders) {
+	public void dispatchNotification(ModerationModule moderationModule, String[][] placeholders, ChatNotificationManager chatNotificationManager) {
 		ProxyServer server = getProxy();
 		String notificationMessage = moderationModule.getWarnNotification(placeholders);
 
 		if (notificationMessage != null && !notificationMessage.isEmpty()) {
-			for (ProxiedPlayer player1 : server.getPlayers()) {
-				if (player1.hasPermission("chatsentinel.notify"))
-					player1.sendMessage(notificationMessage);
+			for (ChatPlayer chatPlayer : chatNotificationManager.getAllPlayers()) {
+				ProxiedPlayer player = server.getPlayer(chatPlayer.getUniqueId());
+				if (player != null) {
+					player.sendMessage(notificationMessage);
+				}
 			}
 
 			server.getConsole().sendMessage(notificationMessage);
@@ -119,7 +123,7 @@ public class ChatSentinel extends Plugin {
 		}
 	}
 
-	public ChatEventResult processEvent(ChatPlayer chatPlayer, ProxiedPlayer player, String originalMessage) {
+	public ChatEventResult processEvent(ChatPlayer chatPlayer, ProxiedPlayer player, String originalMessage, ChatNotificationManager chatNotificationManager) {
 		ChatEventResult finalResult = new ChatEventResult(originalMessage, false, false);
 		MessagesModule messagesModule = moduleManager.getMessagesModule();
 		String playerName = player.getName();
@@ -173,7 +177,7 @@ public class ChatSentinel extends Plugin {
 				}
 
 				// Send admin notification
-				ChatSentinel.getInstance().dispatchNotification(moderationModule, placeholders);
+				ChatSentinel.getInstance().dispatchNotification(moderationModule, placeholders, chatNotificationManager);
 
 				// Update message
 				finalResult.setMessage(result.getMessage());

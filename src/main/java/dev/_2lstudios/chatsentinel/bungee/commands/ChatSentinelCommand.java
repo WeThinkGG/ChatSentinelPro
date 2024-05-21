@@ -1,6 +1,7 @@
 package dev._2lstudios.chatsentinel.bungee.commands;
 
 import dev._2lstudios.chatsentinel.bungee.modules.BungeeModuleManager;
+import dev._2lstudios.chatsentinel.shared.chat.ChatNotificationManager;
 import dev._2lstudios.chatsentinel.shared.chat.ChatPlayer;
 import dev._2lstudios.chatsentinel.shared.chat.ChatPlayerManager;
 import dev._2lstudios.chatsentinel.shared.modules.MessagesModule;
@@ -12,12 +13,14 @@ import net.md_5.bungee.api.plugin.Command;
 
 public class ChatSentinelCommand extends Command {
 	private ChatPlayerManager chatPlayerManager;
+	private ChatNotificationManager chatNotificationManager;
 	private BungeeModuleManager moduleManager;
 	private ProxyServer server;
 
-	public ChatSentinelCommand(ChatPlayerManager chatPlayerManager, BungeeModuleManager moduleManager, ProxyServer server) {
+	public ChatSentinelCommand(ChatPlayerManager chatPlayerManager, ChatNotificationManager chatNotificationManager, BungeeModuleManager moduleManager, ProxyServer server) {
 		super("chatsentinel");
 		this.chatPlayerManager = chatPlayerManager;
+		this.chatNotificationManager = chatNotificationManager;
 		this.moduleManager = moduleManager;
 		this.server = server;
 	}
@@ -61,14 +64,18 @@ public class ChatSentinelCommand extends Command {
 					sendMessage(player, emptyLines.toString());
 				}
 			} else if (args[0].equalsIgnoreCase("notify")) {
-				boolean notify = !chatPlayer.isNotify();
-				
-				chatPlayer.setNotify(notify);
+				if (sender instanceof ProxiedPlayer) {
+					boolean notify = chatNotificationManager.containsPlayer(chatPlayer);
 
-				if (notify) {
-					sendMessage(sender, messagesModule.getNotifyEnabled(lang));
+					if (notify) {
+						chatNotificationManager.removePlayer(chatPlayer);
+						sender.sendMessage(messagesModule.getNotifyDisabled(lang));
+					} else {
+						chatNotificationManager.addPlayer(chatPlayer);
+						sender.sendMessage(messagesModule.getNotifyEnabled(lang));
+					}
 				} else {
-					sendMessage(sender, messagesModule.getNotifyDisabled(lang));
+					sender.sendMessage(messagesModule.getUnknownCommand(lang));
 				}
 			} else {
 				sendMessage(sender, messagesModule.getUnknownCommand(lang));

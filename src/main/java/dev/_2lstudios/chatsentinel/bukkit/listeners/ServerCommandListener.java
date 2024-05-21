@@ -2,6 +2,7 @@ package dev._2lstudios.chatsentinel.bukkit.listeners;
 
 import java.util.Collection;
 
+import dev._2lstudios.chatsentinel.shared.chat.ChatNotificationManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,9 +16,11 @@ import dev._2lstudios.chatsentinel.shared.chat.ChatPlayerManager;
 
 public class ServerCommandListener implements Listener {
 	private ChatPlayerManager chatPlayerManager;
+	private ChatNotificationManager chatNotificationManager;
 
-	public ServerCommandListener(ChatPlayerManager chatPlayerManager) {
+	public ServerCommandListener(ChatPlayerManager chatPlayerManager, ChatNotificationManager chatNotificationManager) {
 		this.chatPlayerManager = chatPlayerManager;
+		this.chatNotificationManager = chatNotificationManager;
 	}
 
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
@@ -38,7 +41,7 @@ public class ServerCommandListener implements Listener {
 		ChatPlayer chatPlayer = chatPlayerManager.getPlayer(player);
 
 		// Process the event
-		ChatEventResult finalResult = ChatSentinel.getInstance().processEvent(chatPlayer, player, message);
+		ChatEventResult finalResult = ChatSentinel.getInstance().processEvent(chatPlayer, player, message, chatNotificationManager);
 
 		// Apply modifiers to event
 		if (finalResult.isHide()) {

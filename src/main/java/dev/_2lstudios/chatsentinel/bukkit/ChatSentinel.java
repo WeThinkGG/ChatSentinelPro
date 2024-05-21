@@ -1,5 +1,7 @@
 package dev._2lstudios.chatsentinel.bukkit;
 
+import dev._2lstudios.chatsentinel.shared.chat.ChatNotificationManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -51,14 +53,15 @@ public class ChatSentinel extends JavaPlugin {
 		moduleManager = new BukkitModuleManager(configUtil);
 		GeneralModule generalModule = moduleManager.getGeneralModule();
 		ChatPlayerManager chatPlayerManager = new ChatPlayerManager();
+		ChatNotificationManager chatNotificationManager = new ChatNotificationManager();
 		PluginManager pluginManager = server.getPluginManager();
 
-		pluginManager.registerEvents(new AsyncPlayerChatListener(chatPlayerManager), this);
-		pluginManager.registerEvents(new PlayerJoinListener(generalModule, chatPlayerManager), this);
-		pluginManager.registerEvents(new PlayerQuitListener(moduleManager.getGeneralModule()), this);
-		pluginManager.registerEvents(new ServerCommandListener(chatPlayerManager), this);
+		pluginManager.registerEvents(new AsyncPlayerChatListener(chatPlayerManager, chatNotificationManager), this);
+		pluginManager.registerEvents(new PlayerJoinListener(generalModule, chatPlayerManager, chatNotificationManager), this);
+		pluginManager.registerEvents(new PlayerQuitListener(moduleManager.getGeneralModule(), chatPlayerManager, chatNotificationManager), this);
+		pluginManager.registerEvents(new ServerCommandListener(chatPlayerManager, chatNotificationManager), this);
 
-		getCommand("chatsentinel").setExecutor(new ChatSentinelCommand(chatPlayerManager, moduleManager, server));
+		getCommand("chatsentinel").setExecutor(new ChatSentinelCommand(chatPlayerManager, chatNotificationManager, moduleManager, server));
 
 		getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
 			if (generalModule.needsNicknameCompile()) {
@@ -81,14 +84,16 @@ public class ChatSentinel extends JavaPlugin {
 		chatPlayer.clearWarns();
 	}
 
-	public void dispatchNotification(ModerationModule moderationModule, String[][] placeholders) {
+	public void dispatchNotification(ModerationModule moderationModule, String[][] placeholders, ChatNotificationManager chatNotificationManager) {
 		Server server = getServer();
 		String notificationMessage = moderationModule.getWarnNotification(placeholders);
 
 		if (notificationMessage != null && !notificationMessage.isEmpty()) {
-			for (Player player1 : server.getOnlinePlayers()) {
-				if (player1.hasPermission("chatsentinel.notify"))
-					player1.sendMessage(notificationMessage);
+			for (ChatPlayer chatPlayer : chatNotificationManager.getAllPlayers()) {
+				Player player = Bukkit.getPlayer(chatPlayer.getUniqueId());
+                if (player != null) {
+					player.sendMessage(notificationMessage);
+				}
 			}
 
 			server.getConsoleSender().sendMessage(notificationMessage);
@@ -115,7 +120,7 @@ public class ChatSentinel extends JavaPlugin {
 		}
 	}
 
-	public ChatEventResult processEvent(ChatPlayer chatPlayer, Player player, String originalMessage) {
+	public ChatEventResult processEvent(ChatPlayer chatPlayer, Player player, String originalMessage, ChatNotificationManager chatNotificationManager) {
 		ChatEventResult finalResult = new ChatEventResult(originalMessage, false, false);
 		MessagesModule messagesModule = moduleManager.getMessagesModule();
 		String playerName = player.getName();
@@ -169,7 +174,7 @@ public class ChatSentinel extends JavaPlugin {
 				}
 
 				// Send admin notification
-				ChatSentinel.getInstance().dispatchNotification(moderationModule, placeholders);
+				ChatSentinel.getInstance().dispatchNotification(moderationModule, placeholders, chatNotificationManager);
 
 				// Update message
 				finalResult.setMessage(result.getMessage());

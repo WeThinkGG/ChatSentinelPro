@@ -13,6 +13,7 @@ import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import dev._2lstudios.chatsentinel.shared.chat.ChatEventResult;
+import dev._2lstudios.chatsentinel.shared.chat.ChatNotificationManager;
 import dev._2lstudios.chatsentinel.shared.chat.ChatPlayer;
 import dev._2lstudios.chatsentinel.shared.chat.ChatPlayerManager;
 import dev._2lstudios.chatsentinel.shared.modules.*;
@@ -25,8 +26,10 @@ import dev._2lstudios.chatsentinel.velocity.utils.ConfigUtil;
 import dev._2lstudios.chatsentinel.velocity.utils.Constants;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Plugin(
@@ -45,6 +48,7 @@ public class ChatSentinel {
 	private VelocityModuleManager moduleManager;
 	private GeneralModule generalModule;
 	private ChatPlayerManager chatPlayerManager;
+	private ChatNotificationManager chatNotificationManager;
 
 	@Inject
 	public ChatSentinel(ProxyServer server, ComponentLogger logger, @DataDirectory Path dataDirectory) {
@@ -61,17 +65,18 @@ public class ChatSentinel {
 		moduleManager = new VelocityModuleManager(configUtil);
 		generalModule = moduleManager.getGeneralModule();
 		chatPlayerManager = new ChatPlayerManager();
+		chatNotificationManager = new ChatNotificationManager();
 
 		EventManager eventManager = server.getEventManager();
 		eventManager.register(this, new ChatListener(this));
-		eventManager.register(this, new PlayerDisconnectListener(generalModule));
-		eventManager.register(this, new PostLoginListener(generalModule, chatPlayerManager));
+		eventManager.register(this, new PlayerDisconnectListener(generalModule, chatPlayerManager, chatNotificationManager));
+		eventManager.register(this, new PostLoginListener(generalModule, chatPlayerManager, chatNotificationManager));
 
 		CommandManager commandManager = server.getCommandManager();
 		CommandMeta commandMeta = commandManager.metaBuilder("chatsentinel")
 				.plugin(this)
 				.build();
-		SimpleCommand chatSentinelCommand = new ChatSentinelCommand(chatPlayerManager, moduleManager, server);
+		SimpleCommand chatSentinelCommand = new ChatSentinelCommand(chatPlayerManager, chatNotificationManager, moduleManager, server);
 
 		commandManager.register(commandMeta, chatSentinelCommand);
 
@@ -99,13 +104,12 @@ public class ChatSentinel {
 		String notificationMessage = moderationModule.getWarnNotification(placeholders);
 
 		if (notificationMessage != null && !notificationMessage.isEmpty()) {
-			for (Player player1 : server.getAllPlayers()) {
-				ChatPlayer chatPlayer = chatPlayerManager.getPlayer(player1);
-				if (player1.hasPermission("chatsentinel.notify") && chatPlayer.isNotify())
-					player1.sendMessage(Component.text(notificationMessage));
+			for (ChatPlayer chatPlayer : chatNotificationManager.getAllPlayers()) {
+				Optional<Player> player = server.getPlayer(chatPlayer.getUniqueId());
+                player.ifPresent(player1 -> player1.sendMessage(Component.text(notificationMessage)));
 			}
 
-			logger.info(notificationMessage);
+			logger.info(LegacyComponentSerializer.legacyAmpersand().deserialize(notificationMessage));
 		}
 	}
 
