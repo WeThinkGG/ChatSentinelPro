@@ -11,7 +11,7 @@ public class BlacklistModerationModule extends ModerationModule {
 
 	private boolean fakeMessage;
 	private boolean hideWords;
-  private boolean blockRawMessage;
+  	private boolean blockRawMessage;
 	private Pattern pattern;
 
 	public BlacklistModerationModule(ModuleManager moduleManager) {
