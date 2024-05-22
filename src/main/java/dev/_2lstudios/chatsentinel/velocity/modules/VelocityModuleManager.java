@@ -80,9 +80,12 @@ public class VelocityModuleManager extends ModuleManager {
 				whitelistYml.node("expressions").childrenList().stream()
 						.map(ConfigurationNode::getString)
 						.toArray(String[]::new));
+		boolean censorshipEnabled = configYml.node("blacklist", "censorship", "enabled").getBoolean(false);
+		String censorshipReplacement = configYml.node("blacklist", "censorship", "replacement").getString("***");
 		getBlacklistModule().loadData(configYml.node("blacklist", "enabled").getBoolean(),
 				configYml.node("blacklist", "fake_message").getBoolean(),
-				configYml.node("blacklist", "hide_words").getBoolean(),
+				censorshipEnabled,
+				censorshipReplacement,
 				configYml.node("blacklist", "warn", "max").getInt(),
 				configYml.node("blacklist", "warn", "notification").getString(),
 				configYml.node("blacklist", "punishments").childrenList().stream()

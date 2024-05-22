@@ -39,7 +39,10 @@ blacklist:
   fake_message: false
 
   # Hide the words the player wrote with a ***
-  hide_words: false
+  censorship:
+    enabled: false
+    # Replacement to be used
+    replacement: "***"
 
   warn:
     # Amount of warns required to execute the commands.
@@ -57,7 +60,7 @@ blacklist:
     - "mute -s %player% Offensive Language (%message%) 1d"
   
   # if fake_message is false
-  # and if hide_words is false
+  # and if censorship is false
   # The message will be cancelled.
   block_raw_message: true
 

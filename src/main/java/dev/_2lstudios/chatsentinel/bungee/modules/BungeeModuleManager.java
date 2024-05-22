@@ -59,8 +59,10 @@ public class BungeeModuleManager extends ModuleManager {
 				configYml.getStringList("general.commands"));
 		getWhitelistModule().loadData(configYml.getBoolean("whitelist.enabled"),
 				whitelistYml.getStringList("expressions").toArray(new String[0]));
+		boolean censorshipEnabled = configYml.getBoolean("blacklist.censorship.enabled", false);
+		String censorshipReplacement = configYml.getString("blacklist.censorship.replacement", "***");
 		getBlacklistModule().loadData(configYml.getBoolean("blacklist.enabled"),
-				configYml.getBoolean("blacklist.fake_message"), configYml.getBoolean("blacklist.hide_words"),
+				configYml.getBoolean("blacklist.fake_message"), censorshipEnabled, censorshipReplacement,
 				configYml.getInt("blacklist.warn.max"), configYml.getString("blacklist.warn.notification"),
 				configYml.getStringList("blacklist.punishments").toArray(new String[0]),
 				blacklistYml.getStringList("expressions").toArray(new String[0]),

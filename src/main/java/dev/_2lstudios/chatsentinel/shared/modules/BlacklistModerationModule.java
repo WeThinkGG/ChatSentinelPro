@@ -10,22 +10,25 @@ public class BlacklistModerationModule extends ModerationModule {
 	private ModuleManager moduleManager;
 
 	private boolean fakeMessage;
-	private boolean hideWords;
   	private boolean blockRawMessage;
 	private Pattern pattern;
+
+	private boolean censorshipEnabled;
+	private String censorshipReplacement;
 
 	public BlacklistModerationModule(ModuleManager moduleManager) {
 		this.moduleManager = moduleManager;
 	}
 
-	public void loadData(boolean enabled, boolean fakeMessage, boolean hideWords, int maxWarns,
+	public void loadData(boolean enabled, boolean fakeMessage, boolean censorshipEnabled, String censorshipReplacement, int maxWarns,
         String warnNotification, String[] commands, String[] patterns, boolean blockRawMessage) {
 		setEnabled(enabled);
 		setMaxWarns(maxWarns);
 		setWarnNotification(warnNotification);
 		setCommands(commands);
 		this.fakeMessage = fakeMessage;
-		this.hideWords = hideWords;
+		this.censorshipEnabled = censorshipEnabled;
+		this.censorshipReplacement = censorshipReplacement;
 		this.pattern = PatternUtil.compile(patterns);
 		this.blockRawMessage = blockRawMessage;
 	}
@@ -34,8 +37,12 @@ public class BlacklistModerationModule extends ModerationModule {
 		return this.fakeMessage;
 	}
 
-	public boolean isHideWords() {
-		return this.hideWords;
+	public boolean isCensorshipEnabled() {
+		return censorshipEnabled;
+	}
+
+	public String getCensorshipReplacement() {
+		return censorshipReplacement;
 	}
 
 	public boolean isBlockRawMessage() {
@@ -84,8 +91,8 @@ public class BlacklistModerationModule extends ModerationModule {
 		if (pattern.matcher(sanitizedMessage).find()) {
 			if (isFakeMessage()) {
 				hide = true;
-			} else if (isHideWords()) {
-				message = pattern.matcher(message).replaceAll("***");
+			} else if (isCensorshipEnabled()) {
+				message = pattern.matcher(message).replaceAll(getCensorshipReplacement());
 			} else if (isBlockRawMessage()) {
 				cancelled = true;
 			}
