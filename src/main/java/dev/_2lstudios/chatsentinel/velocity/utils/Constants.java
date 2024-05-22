@@ -1,10 +1,10 @@
 package dev._2lstudios.chatsentinel.velocity.utils;
 
 public class Constants {
-    public static final String ID = "${id}";
-    public static final String NAME = "${name}";
-    public static final String VERSION = "${version}";
-    public static final String DESCRIPTION = "${description}";
-    public static final String URL = "${url}";
-    public static final String AUTHOR = "${author}";
+    public static final String ID = "chatsentinel";
+    public static final String NAME = "ChatSentinel";
+    public static final String VERSION = "1.0.0";
+    public static final String DESCRIPTION = "Advanced chat management plugin";
+    public static final String URL = "https://builtbybit.com/resources/23698/";
+    public static final String AUTHOR = "2LS";
 }
