@@ -25,6 +25,10 @@
       <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
     <repository>
+      <id>sonatype</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    </repository>
+    <repository>
       <id>central</id>
       <url>https://repo1.maven.org/maven2/</url>
     </repository>
@@ -39,18 +43,18 @@
       <scope>provided</scope>
     </dependency>
 
-    <!-- Adventure Text API dependency (if needed for text handling) -->
+    <!-- Adventure Text API dependency (Updated version) -->
     <dependency>
-        <groupId>net.kyori</groupId>
+        <groupId>net.kyori.adventure</groupId>
         <artifactId>adventure-text</artifactId>
-        <version>4.1.0</version>
+        <version>4.14.0</version>
     </dependency>
 
-    <!-- Configurate dependency (if used for configuration) -->
+    <!-- Configurate Core dependency (Updated version) -->
     <dependency>
         <groupId>org.spongepowered</groupId>
         <artifactId>configurate-core</artifactId>
-        <version>1.7.0</version>
+        <version>4.1.2</version>
     </dependency>
   </dependencies>
 
