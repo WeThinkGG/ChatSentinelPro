@@ -7,52 +7,52 @@ default: "en"
 langs:
   en:
     cleared: "&aThe chat was cleared by &b%player%&a!"
-    reload: "&c&lCS: &aPlugin successfully reloaded!"
+    reload: "&b&lCSP: &aPlugin successfully reloaded!"
     help: |-
       &aChatSentinel commands:
       &e/chatsentinel help &7- &bShows this help message!
       &e/chatsentinel reload &7- &bReloads the plugin!
     unknown_command: "&cUnknown command. Use /chatsentinel help to see available commands!"
     no_permission: "&cYou dont have permission to use this command!"
-    blacklist_warn_message: "&c&lCS: &cYou cant type '%message%'! (%warns%/%maxwarns%)"
-    caps_warn_message: "&c&lCS: &cYou are using too many caps!"
-    cooldown_warn_message: "&c&lCS: &cWait %cooldown%s before sending another message!"
-    flood_warn_message: "&c&lCS: &cYou cant send too large messages!"
-    syntax_warn_message: "&c&lCS: &cSyntax is disabled in this server!"
-    filtered: "&c&lCS: &cYour message was filtered by ChatSentinel! (Characters not allowed)"
+    blacklist_warn_message: "&b&lCSP: &cYou cant type '%message%'! (%warns%/%maxwarns%)"
+    caps_warn_message: "&b&lCSP: &cYou are using too many caps!"
+    cooldown_warn_message: "&b&lCSP: &cWait %cooldown%s before sending another message!"
+    flood_warn_message: "&b&lCSP: &cYou cant send too large messages!"
+    syntax_warn_message: "&b&lCSP: &cSyntax is disabled in this server!"
+    filtered: "&b&lCSP: &cYour message was filtered by ChatSentinel! (Characters not allowed)"
     notify-enabled: "&aChatSentinel notifications are now enabled!"
     notify-disabled: "&cChatSentinel notifications are now disabled!"
   es:
     cleared: "&aEl chat fue limpiado por &b%player%&a!"
-    reload: "&c&lCS: &aPlugin recargado correctamente!"
+    reload: "&b&lCSP: &aPlugin recargado correctamente!"
     help: |-
       &aComandos de ChatSentinel:
       &e/chatsentinel help &7- &bMira este mensaje de ayuda!
       &e/chatsentinel reload &7- &bRecarga el plugin!
     unknown_command: "&cComando desconocido. Usa /chatsentinel help para ver comandos disponibles!"
     no_permission: "&cNo tienes permisos para usar este comando!"
-    blacklist_warn_message: "&c&lCS: &cNo puedes escribir '%message%'! (%warns%/%maxwarns%)"
-    caps_warn_message: "&c&lCS: &cEstas usando demasiadas mayusculas!"
-    cooldown_warn_message: "&c&lCS: &cEspera %cooldown%s antes de enviar otro mensaje!"
-    flood_warn_message: "&c&lCS: &cNo puedes enviar mensajes tan largos!"
-    syntax_warn_message: "&c&lCS: &cLa sintaxis esta deshabilitada en este servidor!"
-    filtered: "&c&lCS: &cTu mensaje fue filtrado por ChatSentinel! (Caracteres no permitidos)"
+    blacklist_warn_message: "&b&lCSP: &cNo puedes escribir '%message%'! (%warns%/%maxwarns%)"
+    caps_warn_message: "&b&lCSP: &cEstas usando demasiadas mayusculas!"
+    cooldown_warn_message: "&b&lCSP: &cEspera %cooldown%s antes de enviar otro mensaje!"
+    flood_warn_message: "&b&lCSP: &cNo puedes enviar mensajes tan largos!"
+    syntax_warn_message: "&b&lCSP: &cLa sintaxis esta deshabilitada en este servidor!"
+    filtered: "&b&lCSP: &cTu mensaje fue filtrado por ChatSentinel! (Caracteres no permitidos)"
     notify-enabled: "&a¡Las notificaciones de ChatSentinel ahora están habilitadas!"
     notify-disabled: "&c¡Las notificaciones de ChatSentinel ahora están deshabilitadas!"
   pt-br:
     cleared: "&aO bate-papo foi limpo por &b%player%&a!"
-    reload: "&c&lCS: &aPlugin recarregado com sucesso!"
+    reload: "&b&lCSP: &aPlugin recarregado com sucesso!"
     help: |-
       &aComandos do ChatSentinel:
       &e/chatsentinel help &7- &bMostra essa mensagem de ajuda!
       &e/chatsentinel reload &7- &bRecarrega o plugin!
     unknown_command: "&cComando desconhecido. Use /chatsentinel help para ver os comandos disponíveis!"
     no_permission: "&cVocê não tem permissão para executar este comando!"
-    blacklist_warn_message: "&c&lCS: &cVocê não pode digitar '%message%'! (%warns%/%maxwarns%)"
-    caps_warn_message: "&c&lCS: &cVocê está digitando muitas letras maiúsculas!"
-    cooldown_warn_message: "&c&lCS: &cEspere %cooldown%s antes de enviar outra mensagem!"
-    flood_warn_message: "&c&lCS: &cVocê não pode enviar mensagens muito grandes!"
-    syntax_warn_message: "&c&lCS: &cA sintaxe está desativada neste servidor!"
-    filtered: "&c&lCS: &cSua mensagem foi filtrada pelo ChatSentinel! (Caracteres não permitidos)"
+    blacklist_warn_message: "&b&lCSP: &cVocê não pode digitar '%message%'! (%warns%/%maxwarns%)"
+    caps_warn_message: "&b&lCSP: &cVocê está digitando muitas letras maiúsculas!"
+    cooldown_warn_message: "&b&lCSP: &cEspere %cooldown%s antes de enviar outra mensagem!"
+    flood_warn_message: "&b&lCSP: &cVocê não pode enviar mensagens muito grandes!"
+    syntax_warn_message: "&b&lCSP: &cA sintaxe está desativada neste servidor!"
+    filtered: "&b&lCSP: &cSua mensagem foi filtrada pelo ChatSentinel! (Caracteres não permitidos)"
     notify-enabled: "&aAs notificações do ChatSentinel agora estão ativadas!"
     notify-disabled: "&cAs notificações do ChatSentinel agora estão desativadas!"

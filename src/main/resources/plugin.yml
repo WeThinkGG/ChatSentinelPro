@@ -8,4 +8,4 @@ api: "1.13"
 api-version: "1.13"
 commands:
   chatsentinel:
-    description: "Main command for ChatSentinel plugin"
+    description: "Main command for ChatSentinelPro plugin"

@@ -1,11 +1,11 @@
-name: Build and Upload Minecraft Plugin
+name: Build MC PLUGIN
 
 on:
   push:
     branches:
-      - master  # Trigger workflow on push to master
+      - master  
     tags:
-      - 'v*'  # Trigger workflow on version tags (e.g., v1.0.0)
+      - 'v*'  
 
 jobs:
   build:
@@ -14,11 +14,11 @@ jobs:
     steps:
       # Step 1: Checkout code
       - name: Checkout repository
-        uses: actions/checkout@v4  # Updated to v4 for Node 20 compatibility
+        uses: actions/checkout@v4  
 
       # Step 2: Set up JDK
       - name: Set up JDK 17
-        uses: actions/setup-java@v4  # Updated to v4 for Node 20 compatibility
+        uses: actions/setup-java@v4  
         with:
           distribution: 'adopt'
           java-version: '17'
@@ -37,29 +37,29 @@ jobs:
 
       # Step 5: Upload JAR as an artifact
       - name: Upload JAR Artifact
-        uses: actions/upload-artifact@v4  # Ensures using v4
+        uses: actions/upload-artifact@v4  
         with:
-          name: plugin-jar
+          name: ChatSentinelPro
           path: target/*.jar
 
   release:
     needs: build
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')  # Only run for tags
+    if: startsWith(github.ref, 'refs/tags/')  
 
     steps:
       # Step 1: Checkout code
       - name: Checkout repository
-        uses: actions/checkout@v4  # Updated to v4 for Node 20 compatibility
+        uses: actions/checkout@v4  
 
       # Step 2: Create GitHub release and upload JAR
       - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref_name }}  # Tag as the version name
-          release_name: "Release ${{ github.ref_name }}"  # Create a release with the tag name
-          body: "Release of version ${{ github.ref_name }}"  # Set the release description
-          files: target/*.jar  # Upload the built JAR file to the release
+          tag_name: ${{ github.ref_name }}  
+          release_name: "Release ${{ github.ref_name }}"  
+          body: "Release of version ${{ github.ref_name }}"  
+          files: target/*.jar  
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for authentication
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  

@@ -8,21 +8,27 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import dev._2lstudios.chatsentinel.bukkit.ChatSentinel;
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class BlacklistFetcher {
     private Set<String> blacklistWords;
     private long lastFetchTime;
-    private static final long CACHE_DURATION = 60 * 60 * 1000;
-    private static final String BLACKLIST_URL = "https://raw.githubusercontent.com/WeThinkGG/curesword/refs/heads/main/gg.txt";
-
+    private String blacklistURL;
+    private long cacheDuration;
+    
     public BlacklistFetcher() {
         this.blacklistWords = new HashSet<>();
         this.lastFetchTime = 0;
+        
+        // Load values from config
+        FileConfiguration config = ChatSentinel.getInstance().getConfig();
+        this.blacklistURL = config.getString("blacklist.url", "https://raw.githubusercontent.com/WeThinkGG/curesword/refs/heads/main/gg.txt");
+        this.cacheDuration = config.getLong("blacklist.cache_duration", 60 * 60 * 1000);  // Default: 1 hour
     }
 
     public Set<String> getBlacklistWords() {
         long currentTime = System.currentTimeMillis();
-        if (currentTime - lastFetchTime > CACHE_DURATION) {
+        if (currentTime - lastFetchTime > cacheDuration) {
             fetchBlacklistWords();
         }
         return blacklistWords;
@@ -30,7 +36,7 @@ public class BlacklistFetcher {
 
     private void fetchBlacklistWords() {
         try {
-            URL url = new URL(BLACKLIST_URL);
+            URL url = new URL(blacklistURL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setConnectTimeout(5000);

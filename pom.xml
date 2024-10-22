@@ -2,12 +2,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>dev._2lstudios.chatsentinel</groupId>
-    <artifactId>ChatSentinel</artifactId>
+    <artifactId>ChatSentinelPro</artifactId>
     <packaging>jar</packaging>
 
-    <name>ChatSentinel</name>
+    <name>ChatSentinelPro</name>
     <description>Advanced chat management plugin</description>
-    <version>1.0.2</version>
+    <version>1.0.</version>
     <url>https://builtbybit.com/resources/23698/</url>
 
     <properties>
