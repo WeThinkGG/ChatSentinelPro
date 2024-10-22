@@ -37,7 +37,7 @@
     <dependency>
       <groupId>net.kyori</groupId>
       <artifactId>minimessage</artifactId>
-      <version>5.0.0</version>
+      <version>4.2.0</version> <!-- Use a valid version -->
     </dependency>
 
     <dependency>
