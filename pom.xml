@@ -50,7 +50,7 @@
         
         <!-- BungeeCord API -->
         <dependency>
-            <groupId>net.md_5.bungee</groupId>
+            <groupId>net.md-5</groupId>
             <artifactId>bungee-api</artifactId>
             <version>${bungeecord.version}</version>
             <scope>provided</scope>
