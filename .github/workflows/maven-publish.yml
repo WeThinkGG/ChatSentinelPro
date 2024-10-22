@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master  # Trigger workflow on push to master
-  push:
     tags:
       - 'v*'  # Trigger workflow on version tags (e.g., v1.0.0)
 
@@ -64,3 +63,4 @@ jobs:
           files: target/*.jar  # Upload the built JAR file to the release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for authentication
+          
