@@ -11,51 +11,10 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <velocity.version>1.2.0</velocity.version> <!-- Update to the latest stable version -->
-        <bungeecord.version>1.20</bungeecord.version> <!-- Use the stable version -->
         <adventure.version>4.13.0</adventure.version> <!-- Update to your required version -->
     </properties>
     
-    <repositories>
-        <repository>
-            <id>velocity</id>
-            <url>https://repo.velocitypowered.com/snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>bungee</id>
-            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-    
     <dependencies>
-        <!-- Velocity API -->
-        <dependency>
-            <groupId>com.velocitypowered</groupId>
-            <artifactId>velocity-api</artifactId>
-            <version>${velocity.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        
-        <!-- BungeeCord API -->
-        <dependency>
-            <groupId>net.md-5</groupId>
-            <artifactId>bungee-api</artifactId>
-            <version>${bungeecord.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
         <!-- Kyori Adventure API -->
         <dependency>
             <groupId>net.kyori</groupId>
