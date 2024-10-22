@@ -41,8 +41,7 @@
     <dependency>
       <groupId>net.kyori</groupId>
       <artifactId>minimessage</artifactId>
-      <version>3.1.1</version> <!-- Updated to an available version -->
-      <scope>compile</scope>
+      <version>3.1.0</version> <!-- Ensure this is an available version -->
     </dependency>
 
     <dependency>
