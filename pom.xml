@@ -99,8 +99,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>libs/</classpathPrefix>
-                            <mainClass>dev._2lstudios.chatsentinel.MainClass</mainClass> <!-- Change to your main class -->
-                        </manifest>
+                            <mainClass>dev._2lstudios.chatsentinel.ChatSentinel.java</mainClass> 
                     </archive>
                 </configuration>
             </plugin>
