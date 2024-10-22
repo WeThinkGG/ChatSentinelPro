@@ -34,15 +34,8 @@
     </repository>
     <repository>
       <id>adventure-repo</id>
-      <url>https://repo.spongepowered.org/maven/</url> <!-- Add this for Adventure dependencies -->
+      <url>https://s01.oss.sonatype.org/content/repositories/releases/</url> <!-- Adventure release repo -->
     </repository>
-    <repositories>
-    <repository>
-        <id>adventure-repo</id>
-        <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-    </repository>
-</repositories>
-
   </repositories>
 
   <dependencies>
@@ -55,8 +48,8 @@
 
     <dependency>
         <groupId>net.kyori.adventure</groupId>
-        <artifactId>adventure-text-minimessage</artifactId> <!-- Correct artifact -->
-        <version>4.17.0</version> <!-- Correct version -->
+        <artifactId>adventure-text-minimessage</artifactId>
+        <version>4.17.0</version>
     </dependency>
 
     <dependency>
