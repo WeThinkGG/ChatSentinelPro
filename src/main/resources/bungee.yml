@@ -1,9 +1,0 @@
-name: ${name}
-description: ${description}
-author: ${author}
-version: ${version}
-url: ${url}
-main: dev._2lstudios.chatsentinel.bungee.ChatSentinel
-commands:
-  chatsentinel:
-    description: "Main command for ChatSentinel plugin"
