@@ -25,17 +25,12 @@
       <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
     <repository>
-      <id>sonatype</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-    </repository>
-    <repository>
       <id>central</id>
       <url>https://repo1.maven.org/maven2/</url>
     </repository>
   </repositories>
 
   <dependencies>
-    <!-- Spigot API dependency -->
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
@@ -43,18 +38,16 @@
       <scope>provided</scope>
     </dependency>
 
-    <!-- Adventure Text API dependency (Updated version) -->
     <dependency>
-        <groupId>net.kyori.adventure</groupId>
-        <artifactId>adventure-text</artifactId>
-        <version>4.16.0</version>
+      <groupId>net.kyori.adventure</groupId>
+      <artifactId>adventure-text</artifactId>
+      <version>4.16.0</version>
     </dependency>
 
-    <!-- Configurate Core dependency (Updated version) -->
     <dependency>
-        <groupId>org.spongepowered</groupId>
-        <artifactId>configurate-core</artifactId>
-        <version>4.1.2</version>
+      <groupId>org.spongepowered</groupId>
+      <artifactId>configurate-core</artifactId>
+      <version>4.1.2</version>
     </dependency>
   </dependencies>
 
@@ -70,7 +63,6 @@
     </resources>
 
     <plugins>
-      <!-- Maven Compiler Plugin -->
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version>
@@ -80,7 +72,6 @@
         </configuration>
       </plugin>
 
-      <!-- Templating Maven Plugin -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>templating-maven-plugin</artifactId>
