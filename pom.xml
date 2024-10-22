@@ -44,11 +44,7 @@
     </dependency>
 
     <!-- Adventure Text API dependency (Updated version) -->
-    <dependency>
-        <groupId>net.kyori.adventure</groupId>
-        <artifactId>adventure-text</artifactId>
-        <version>4.14.0</version>
-    </dependency>
+ 
 
     <!-- Configurate Core dependency (Updated version) -->
     <dependency>
