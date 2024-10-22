@@ -1,6 +1,6 @@
-fetch:
-  url: "https://raw.githubusercontent.com/WeThinkGG/curesword/refs/heads/main/gg.txt"  # URL to fetch the blacklist/whitelist from
-  interval: 3600  # Time interval in seconds to refetch the list (3600 seconds = 1 hour)
+blacklist:
+  url: "https://raw.githubusercontent.com/WeThinkGG/curesword/refs/heads/main/gg.txt"  # URL to fetch the blacklist
+  cache_duration: 3600000  # Time interval in milliseconds to refetch the list (3600 seconds = 1 hour)
   
 # Cleans up whitelisted expressions from the message
 # This is basically a bypass for certain patterns
