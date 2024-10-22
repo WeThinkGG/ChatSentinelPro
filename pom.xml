@@ -11,8 +11,8 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <velocity.version>3.3.0</velocity.version> 
-        <bungeecord.version>1.20-R0.1</bungeecord.version> 
+        <velocity.version>3.2.0</velocity.version> <!-- Stable version -->
+        <bungeecord.version>1.20-R0.4</bungeecord.version> <!-- Use the stable version -->
         <adventure.version>4.13.0</adventure.version> <!-- Update to your required version -->
     </properties>
     
@@ -29,7 +29,7 @@
         </repository>
         <repository>
             <id>bungee</id>
-            <url>https://repo.md-5.net/repository/snapshots/</url> <!-- Updated Bungee repository -->
+            <url>https://repo.md-5.net/repository/snapshots/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
