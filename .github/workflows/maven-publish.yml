@@ -14,11 +14,11 @@ jobs:
     steps:
       # Step 1: Checkout code
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3  # Check if there are any newer versions
 
       # Step 2: Set up JDK
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v3  # Check for the latest version if available
         with:
           distribution: 'adopt'
           java-version: '17'
@@ -37,7 +37,7 @@ jobs:
 
       # Step 5: Upload JAR as an artifact
       - name: Upload JAR Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3  # Check for the latest version if available
         with:
           name: plugin-jar
           path: target/*.jar
@@ -50,12 +50,12 @@ jobs:
     steps:
       # Step 1: Checkout code
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3  # Check if there are any newer versions
 
       # Step 2: Create GitHub release and upload JAR
       - name: Create GitHub Release
         id: create_release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v1  # Ensure it's the latest version
         with:
           tag_name: ${{ github.ref_name }}  # Tag as the version name
           release_name: "Release ${{ github.ref_name }}"  # Create a release with the tag name
@@ -63,4 +63,3 @@ jobs:
           files: target/*.jar  # Upload the built JAR file to the release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for authentication
-          
