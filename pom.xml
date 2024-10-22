@@ -11,8 +11,8 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <velocity.version>3.2.0</velocity.version> <!-- Stable version -->
-        <bungeecord.version>1.20-R0.4</bungeecord.version> <!-- Use the stable version -->
+        <velocity.version>3.3.0</velocity.version> <!-- Stable version -->
+        <bungeecord.version>1.20-R0.2</bungeecord.version> <!-- Use the stable version -->
         <adventure.version>4.13.0</adventure.version> <!-- Update to your required version -->
     </properties>
     
