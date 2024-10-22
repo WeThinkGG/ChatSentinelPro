@@ -1,0 +1,57 @@
+name: Build and Upload Minecraft Plugin
+
+on:
+  push:
+    branches:
+      - master  # Trigger workflow on push to master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v3  # Updated to v3 for Node 16 compatibility
+
+      # Step 2: Set up JDK
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3  # Updated to v3 for Node 16 compatibility
+        with:
+          distribution: 'adopt'  # Options: adopt, zulu, amazon, etc.
+          java-version: '17'  # Java 17 for Minecraft plugin compatibility
+          cache: maven  # Cache Maven dependencies for faster builds
+
+      # Step 3: Build with Maven
+      - name: Build with Maven
+        run: mvn clean package
+
+      # Step 4: Upload JAR as an artifact
+      - name: Upload JAR Artifact
+        uses: actions/upload-artifact@v3  # Updated to v3 for Node 16 compatibility
+        with:
+          name: plugin-jar
+          path: target/*.jar  # Adjust this path if necessary (default is target/ folder)
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref_type == 'tag'  # Only release on tags
+
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v3  # Updated to v3 for Node 16 compatibility
+
+      # Step 2: Create GitHub release and upload JAR
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v1  # GitHub action to create releases
+        with:
+          tag_name: ${{ github.ref_name }}  # Tag as the version name
+          release_name: "Release ${{ github.ref_name }}"  # Create a release with the tag name
+          body: "Release of version ${{ github.ref_name }}"  # Set the release description
+          files: target/*.jar  # Upload the built JAR file to the release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for authentication
+          
