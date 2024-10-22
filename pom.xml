@@ -36,6 +36,13 @@
       <id>adventure-repo</id>
       <url>https://repo.spongepowered.org/maven/</url> <!-- Add this for Adventure dependencies -->
     </repository>
+    <repositories>
+    <repository>
+        <id>adventure-repo</id>
+        <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    </repository>
+</repositories>
+
   </repositories>
 
   <dependencies>
