@@ -11,8 +11,8 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <velocity.version>1.2.0</velocity.version> <!-- Update to the latest stable version -->
-        <bungeecord.version>1.20</bungeecord.version> <!-- Use the stable version -->
+        <velocity.version>3.1.1</velocity.version> <!-- Use the latest stable version -->
+        <bungeecord.version>1.20-R0.4</bungeecord.version> <!-- Use the stable version -->
         <adventure.version>4.13.0</adventure.version> <!-- Update to your required version -->
     </properties>
     
@@ -29,7 +29,7 @@
         </repository>
         <repository>
             <id>bungee</id>
-            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+            <url>https://repo.md-5.net/repository/snapshots/</url> <!-- Updated Bungee repository -->
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -44,15 +44,15 @@
         <dependency>
             <groupId>com.velocitypowered</groupId>
             <artifactId>velocity-api</artifactId>
-            <version>3.3.0-SNAPSHOT</version>
+            <version>${velocity.version}</version>
             <scope>provided</scope>
         </dependency>
         
         <!-- BungeeCord API -->
         <dependency>
-            <groupId>net.md_5.bungee.api</groupId>
+            <groupId>net.md-5</groupId>
             <artifactId>bungee-api</artifactId>
-            <version>1.20-R0.2-SNAPSHOT</version>
+            <version>${bungeecord.version}</version>
             <scope>provided</scope>
         </dependency>
 
