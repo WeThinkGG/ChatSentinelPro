@@ -32,6 +32,10 @@
       <id>central</id>
       <url>https://repo1.maven.org/maven2/</url>
     </repository>
+    <repository>
+      <id>adventure-repo</id>
+      <url>https://repo.spongepowered.org/maven/</url> <!-- Add this for Adventure dependencies -->
+    </repository>
   </repositories>
 
   <dependencies>
@@ -44,14 +48,14 @@
 
     <dependency>
         <groupId>net.kyori.adventure</groupId>
-        <artifactId>adventure-text</artifactId>
-        <version>4.14.0</version> <!-- Updated version -->
+        <artifactId>adventure-text-minimessage</artifactId> <!-- Correct artifact -->
+        <version>4.14.0</version> <!-- Correct version -->
     </dependency>
 
     <dependency>
         <groupId>org.spongepowered</groupId>
         <artifactId>configurate-core</artifactId>
-        <version>4.1.2</version> <!-- Updated version -->
+        <version>4.1.2</version>
     </dependency>
   </dependencies>
 
