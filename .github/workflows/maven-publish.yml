@@ -25,11 +25,18 @@ jobs:
           java-version: '17'
           cache: maven
 
-      # Step 3: Build with Maven
+      # Step 3: Ensure target directory exists
+      - name: Ensure target directory exists
+        run: |
+          if [ ! -d "target" ]; then
+            mkdir target
+          fi
+
+      # Step 4: Build with Maven
       - name: Build with Maven
         run: mvn clean package
 
-      # Step 4: Upload JAR as an artifact
+      # Step 5: Upload JAR as an artifact
       - name: Upload JAR Artifact
         uses: actions/upload-artifact@v3
         with:
@@ -57,4 +64,3 @@ jobs:
           files: target/*.jar  # Upload the built JAR file to the release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for authentication
-          
