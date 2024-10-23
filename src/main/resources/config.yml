@@ -11,7 +11,7 @@ general:
   sanitize-names: true
 
   # Filter and remove non-latin characters from all messages.
-  filter-other: false
+  filter-other: true
 
   # Commands that will be treated as normal messages
   commands:
@@ -47,7 +47,7 @@ blacklist:
   warn:
     # Amount of warns required to execute the commands.
     # Set to -1 to disable this feature completely.
-    max: 3
+    max: -1
 
     # Sends a notification to players with chatsentinel.notify permission.
     # Set to "" to disable this feature completely.

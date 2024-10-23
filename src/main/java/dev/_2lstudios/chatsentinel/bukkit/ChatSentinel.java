@@ -1,6 +1,5 @@
 package dev._2lstudios.chatsentinel.bukkit;
 
-import dev._2lstudios.chatsentinel.bukkit.utils.BlockerUtil;
 import dev._2lstudios.chatsentinel.shared.chat.ChatNotificationManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -26,158 +25,172 @@ import dev._2lstudios.chatsentinel.shared.modules.ModerationModule;
 import dev._2lstudios.chatsentinel.shared.modules.SyntaxModerationModule;
 
 public class ChatSentinel extends JavaPlugin {
-    private static ChatSentinel instance;
-    private BukkitModuleManager moduleManager;
-    private BlockerUtil blockerUtil;
+	// Static instance
+	private static ChatSentinel instance;
 
-    public static ChatSentinel getInstance() {
-        return instance;
-    }
+	public static ChatSentinel getInstance() {
+		return instance;
+	}
 
-    public static void setInstance(ChatSentinel instance) {
-        ChatSentinel.instance = instance;
-    }
+	public static void setInstance(ChatSentinel instance) {
+		ChatSentinel.instance = instance;
+	}
 
-    public BukkitModuleManager getModuleManager() {
-        return moduleManager;
-    }
+	// Module Manager
+	private BukkitModuleManager moduleManager;
 
-    @Override
-    public void onEnable() {
-        setInstance(this);
-        ConfigUtil configUtil = new ConfigUtil(this);
-        Server server = getServer();
+	public BukkitModuleManager getModuleManager() {
+		return moduleManager;
+	}
 
-        moduleManager = new BukkitModuleManager(configUtil);
-        blockerUtil = new BlockerUtil(); // Initialize BlockerUtil
+	@Override
+	public void onEnable() {
+		setInstance(this);
 
-        GeneralModule generalModule = moduleManager.getGeneralModule();
-        ChatPlayerManager chatPlayerManager = new ChatPlayerManager();
-        ChatNotificationManager chatNotificationManager = new ChatNotificationManager();
-        PluginManager pluginManager = server.getPluginManager();
+		ConfigUtil configUtil = new ConfigUtil(this);
+		Server server = getServer();
 
-        pluginManager.registerEvents(new AsyncPlayerChatListener(chatPlayerManager, chatNotificationManager), this);
-        pluginManager.registerEvents(new PlayerJoinListener(generalModule, chatPlayerManager, chatNotificationManager), this);
-        pluginManager.registerEvents(new PlayerQuitListener(moduleManager.getGeneralModule(), chatPlayerManager, chatNotificationManager), this);
-        pluginManager.registerEvents(new ServerCommandListener(chatPlayerManager, chatNotificationManager), this);
+		moduleManager = new BukkitModuleManager(configUtil);
+		GeneralModule generalModule = moduleManager.getGeneralModule();
+		ChatPlayerManager chatPlayerManager = new ChatPlayerManager();
+		ChatNotificationManager chatNotificationManager = new ChatNotificationManager();
+		PluginManager pluginManager = server.getPluginManager();
 
-        getCommand("chatsentinel").setExecutor(new ChatSentinelCommand(chatPlayerManager, chatNotificationManager, moduleManager, server));
+		pluginManager.registerEvents(new AsyncPlayerChatListener(chatPlayerManager, chatNotificationManager), this);
+		pluginManager.registerEvents(new PlayerJoinListener(generalModule, chatPlayerManager, chatNotificationManager), this);
+		pluginManager.registerEvents(new PlayerQuitListener(moduleManager.getGeneralModule(), chatPlayerManager, chatNotificationManager), this);
+		pluginManager.registerEvents(new ServerCommandListener(chatPlayerManager, chatNotificationManager), this);
 
-        getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
-            if (generalModule.needsNicknameCompile()) {
-                generalModule.compileNicknamesPattern();
-            }
-        }, 20L, 20L);
-    }
+		getCommand("chatsentinel").setExecutor(new ChatSentinelCommand(chatPlayerManager, chatNotificationManager, moduleManager, server));
 
-    public void dispatchCommmands(ModerationModule moderationModule, ChatPlayer chatPlayer, String[][] placeholders) {
-        Server server = getServer();
+		getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
+			if (generalModule.needsNicknameCompile()) {
+				generalModule.compileNicknamesPattern();
+			}
+		}, 20L, 20L);
+	}
 
-        server.getScheduler().runTask(this, () -> {
-            ConsoleCommandSender console = server.getConsoleSender();
-            for (String command : moderationModule.getCommands(placeholders)) {
-                server.dispatchCommand(console, command);
-            }
-        });
+	public void dispatchCommmands(ModerationModule moderationModule, ChatPlayer chatPlayer, String[][] placeholders) {
+		Server server = getServer();
 
-        chatPlayer.clearWarns();
-    }
+		server.getScheduler().runTask(this, () -> {
+			ConsoleCommandSender console = server.getConsoleSender();
 
-    public void dispatchNotification(ModerationModule moderationModule, String[][] placeholders, ChatNotificationManager chatNotificationManager) {
-        Server server = getServer();
-        String notificationMessage = moderationModule.getWarnNotification(placeholders);
+			for (String command : moderationModule.getCommands(placeholders)) {
+				server.dispatchCommand(console, command);
+			}
+		});
 
-        if (notificationMessage != null && !notificationMessage.isEmpty()) {
-            for (ChatPlayer chatPlayer : chatNotificationManager.getAllPlayers()) {
-                Player player = Bukkit.getPlayer(chatPlayer.getUniqueId());
+		chatPlayer.clearWarns();
+	}
+
+	public void dispatchNotification(ModerationModule moderationModule, String[][] placeholders, ChatNotificationManager chatNotificationManager) {
+		Server server = getServer();
+		String notificationMessage = moderationModule.getWarnNotification(placeholders);
+
+		if (notificationMessage != null && !notificationMessage.isEmpty()) {
+			for (ChatPlayer chatPlayer : chatNotificationManager.getAllPlayers()) {
+				Player player = Bukkit.getPlayer(chatPlayer.getUniqueId());
                 if (player != null) {
-                    player.sendMessage(notificationMessage);
-                }
-            }
-            server.getConsoleSender().sendMessage(notificationMessage);
-        }
-    }
+					player.sendMessage(notificationMessage);
+				}
+			}
 
-    public String[][] getPlaceholders(Player player, ChatPlayer chatPlayer, ModerationModule moderationModule, String message) {
-        String playerName = player.getName();
-        int warns = chatPlayer.getWarns(moderationModule);
-        int maxWarns = moderationModule.getMaxWarns();
-        float remainingTime = moduleManager.getCooldownModule().getRemainingTime(chatPlayer, message);
+			server.getConsoleSender().sendMessage(notificationMessage);
+		}
+	}
 
-        return new String[][]{
-                {"%player%", "%message%", "%warns%", "%maxwarns%", "%cooldown%"},
-                {playerName, message, String.valueOf(warns), String.valueOf(maxWarns), String.valueOf(remainingTime)}
-        };
-    }
+	public String[][] getPlaceholders(Player player, ChatPlayer chatPlayer, ModerationModule moderationModule, String message) {
+		String playerName = player.getName();
+		int warns = chatPlayer.getWarns(moderationModule);
+		int maxWarns = moderationModule.getMaxWarns();
+		float remainingTime = moduleManager.getCooldownModule().getRemainingTime(chatPlayer, message);
 
-    public void sendWarning(String[][] placeholders, ModerationModule moderationModule, Player player, String lang) {
-        String warnMessage = moduleManager.getMessagesModule().getWarnMessage(placeholders, lang, moderationModule.getName());
+		return new String[][] {
+				{ "%player%", "%message%", "%warns%", "%maxwarns%", "%cooldown%" },
+				{ playerName, message, String.valueOf(warns), String.valueOf(maxWarns), String.valueOf(remainingTime) }
+		};
+	}
 
-        if (warnMessage != null && !warnMessage.isEmpty()) {
-            player.sendMessage(warnMessage);
-        }
-    }
+	public void sendWarning(String[][] placeholders, ModerationModule moderationModule, Player player, String lang) {
+		String warnMessage = moduleManager.getMessagesModule().getWarnMessage(placeholders, lang, moderationModule.getName());
 
-    public ChatEventResult processEvent(ChatPlayer chatPlayer, Player player, String originalMessage, ChatNotificationManager chatNotificationManager) {
-        ChatEventResult finalResult = new ChatEventResult(originalMessage, false, false);
-        MessagesModule messagesModule = moduleManager.getMessagesModule();
-        String playerName = player.getName();
-        String lang = chatPlayer.getLocale();
-        ModerationModule[] moderationModulesToProcess = {
-                moduleManager.getSyntaxModule(),
-                moduleManager.getCapsModule(),
-                moduleManager.getCooldownModule(),
-                moduleManager.getFloodModule(),
-                moduleManager.getBlacklistModule()
-        };
+		if (warnMessage != null && !warnMessage.isEmpty()) {
+			player.sendMessage(warnMessage);
+		}
+	}
 
-        // Check for blocked domains and fonts before processing
-        if (blockerUtil.isBlockedMessage(originalMessage)) {
-            chatPlayer.addWarn(moduleManager.getBlacklistModule());
-            String[][] placeholders = ChatSentinel.getInstance().getPlaceholders(player, chatPlayer, moduleManager.getBlacklistModule(), originalMessage);
-            ChatSentinel.getInstance().sendWarning(placeholders, moduleManager.getBlacklistModule(), player, lang);
-            return new ChatEventResult(originalMessage, true, true); // Cancel event
-        }
+	public ChatEventResult processEvent(ChatPlayer chatPlayer, Player player, String originalMessage, ChatNotificationManager chatNotificationManager) {
+		ChatEventResult finalResult = new ChatEventResult(originalMessage, false, false);
+		MessagesModule messagesModule = moduleManager.getMessagesModule();
+		String playerName = player.getName();
+		String lang = chatPlayer.getLocale();
+		ModerationModule[] moderationModulesToProcess = {
+				moduleManager.getSyntaxModule(),
+				moduleManager.getCapsModule(),
+				moduleManager.getCooldownModule(),
+				moduleManager.getFloodModule(),
+				moduleManager.getBlacklistModule()
+		};
 
-        for (ModerationModule moderationModule : moderationModulesToProcess) {
-            boolean isCommmand = originalMessage.startsWith("/");
-            boolean isNormalCommmand = ChatSentinel.getInstance().getModuleManager().getGeneralModule()
-                    .isCommand(originalMessage);
-            if (!(moderationModule instanceof SyntaxModerationModule) &&
-                    !(moderationModule instanceof CooldownModerationModule) &&
-                    isCommmand &&
-                    !isNormalCommmand) {
-                continue;
-            }
+		for (ModerationModule moderationModule : moderationModulesToProcess) {
+			// Do not check annormal commands (unless syntax or cooldown)
+			boolean isCommmand = originalMessage.startsWith("/");
+			boolean isNormalCommmand = ChatSentinel.getInstance().getModuleManager().getGeneralModule()
+					.isCommand(originalMessage);
+			if (!(moderationModule instanceof SyntaxModerationModule) &&
+					!(moderationModule instanceof CooldownModerationModule) &&
+					isCommmand &&
+					!isNormalCommmand) {
+				continue;
+			}
 
-            String message = finalResult.getMessage();
-            if (player.hasPermission(moderationModule.getBypassPermission())) {
-                continue;
-            }
+			// Get the modified message
+			String message = finalResult.getMessage();
 
-            ChatEventResult result = moderationModule.processEvent(chatPlayer, messagesModule, playerName, message, lang);
+			// Check if player has bypass
+			if (player.hasPermission(moderationModule.getBypassPermission())) {
+				continue;
+			}
 
-            if (result != null) {
-                chatPlayer.addWarn(moderationModule);
-                String[][] placeholders = ChatSentinel.getInstance().getPlaceholders(player, chatPlayer, moderationModule, message);
-                ChatSentinel.getInstance().sendWarning(placeholders, moderationModule, player, lang);
+			// Process
+			ChatEventResult result = moderationModule.processEvent(chatPlayer, messagesModule, playerName, message, lang);
 
-                if (moderationModule.hasExceededWarns(chatPlayer)) {
-                    ChatSentinel.getInstance().dispatchCommmands(moderationModule, chatPlayer, placeholders);
-                }
+			// Skip result
+			if (result != null) {
+				// Add warning
+				chatPlayer.addWarn(moderationModule);
 
-                ChatSentinel.getInstance().dispatchNotification(moderationModule, placeholders, chatNotificationManager);
-                finalResult.setMessage(result.getMessage());
+				// Get placeholders
+				String[][] placeholders = ChatSentinel.getInstance().getPlaceholders(player, chatPlayer, moderationModule,
+						message);
 
-                if (result.isHide())
-                    finalResult.setHide(true);
-                if (result.isCancelled()) {
-                    finalResult.setCancelled(true);
-                    break;
-                }
-            }
-        }
+				// Send warning
+				ChatSentinel.getInstance().sendWarning(placeholders, moderationModule, player, lang);
 
-        return finalResult;
-    }
+				// Send punishment comamnds
+				if (moderationModule.hasExceededWarns(chatPlayer)) {
+					ChatSentinel.getInstance().dispatchCommmands(moderationModule, chatPlayer, placeholders);
+				}
+
+				// Send admin notification
+				ChatSentinel.getInstance().dispatchNotification(moderationModule, placeholders, chatNotificationManager);
+
+				// Update message
+				finalResult.setMessage(result.getMessage());
+
+				// Update hide
+				if (result.isHide())
+					finalResult.setHide(true);
+
+				// Update cancelled
+				if (result.isCancelled()) {
+					finalResult.setCancelled(true);
+					break;
+				}
+			}
+		}
+
+		return finalResult;
+	}
 }
