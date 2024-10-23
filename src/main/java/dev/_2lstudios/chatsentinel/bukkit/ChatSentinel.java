@@ -1,7 +1,5 @@
 package dev._2lstudios.chatsentinel.bukkit;
 
-import dev._2lstudios.chatsentinel.shared.chat.ChatNotificationManager;
-import org.bstats.bukkit.Metrics;  // Updated import for Metrics
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
@@ -17,6 +15,7 @@ import dev._2lstudios.chatsentinel.bukkit.listeners.ServerCommandListener;
 import dev._2lstudios.chatsentinel.bukkit.modules.BukkitModuleManager;
 import dev._2lstudios.chatsentinel.bukkit.utils.ConfigUtil;
 import dev._2lstudios.chatsentinel.shared.chat.ChatEventResult;
+import dev._2lstudios.chatsentinel.shared.chat.ChatNotificationManager;
 import dev._2lstudios.chatsentinel.shared.chat.ChatPlayer;
 import dev._2lstudios.chatsentinel.shared.chat.ChatPlayerManager;
 import dev._2lstudios.chatsentinel.shared.modules.CooldownModerationModule;
@@ -50,9 +49,6 @@ public class ChatSentinel extends JavaPlugin {
 
         ConfigUtil configUtil = new ConfigUtil(this);
         Server server = getServer();
-
-        // Setup Metrics for bStats
-        Metrics metrics = new Metrics(this, 23700); // Replace with your plugin ID
 
         moduleManager = new BukkitModuleManager(configUtil);
         GeneralModule generalModule = moduleManager.getGeneralModule();
