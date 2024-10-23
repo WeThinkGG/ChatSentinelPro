@@ -1,6 +1,7 @@
 package dev._2lstudios.chatsentinel.bukkit;
 
 import dev._2lstudios.chatsentinel.shared.chat.ChatNotificationManager;
+import org.bstats.bukkit.Metrics;  // Updated import for Metrics
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
@@ -23,13 +24,10 @@ import dev._2lstudios.chatsentinel.shared.modules.GeneralModule;
 import dev._2lstudios.chatsentinel.shared.modules.MessagesModule;
 import dev._2lstudios.chatsentinel.shared.modules.ModerationModule;
 import dev._2lstudios.chatsentinel.shared.modules.SyntaxModerationModule;
-import org.bstats.bukkit.Metrics;
-import org.bstats.bukkit.Metrics.SimpleChart;
 
 public class ChatSentinel extends JavaPlugin {
     // Static instance
     private static ChatSentinel instance;
-    private Metrics metrics; // Declare Metrics instance
 
     public static ChatSentinel getInstance() {
         return instance;
@@ -50,11 +48,11 @@ public class ChatSentinel extends JavaPlugin {
     public void onEnable() {
         setInstance(this);
 
-        // Initialize bStats
-        metrics = new Metrics(this, 23700); // Your plugin ID
-
         ConfigUtil configUtil = new ConfigUtil(this);
         Server server = getServer();
+
+        // Setup Metrics for bStats
+        Metrics metrics = new Metrics(this, 23700); // Replace with your plugin ID
 
         moduleManager = new BukkitModuleManager(configUtil);
         GeneralModule generalModule = moduleManager.getGeneralModule();
@@ -74,17 +72,9 @@ public class ChatSentinel extends JavaPlugin {
                 generalModule.compileNicknamesPattern();
             }
         }, 20L, 20L);
-
-        // Example: Sending a custom metric (optional)
-        metrics.addCustomChart(new Metrics.SimpleChart("active_players") {
-            @Override
-            public int getValue() {
-                return Bukkit.getOnlinePlayers().size(); // Report number of active players
-            }
-        });
     }
 
-    public void dispatchCommmands(ModerationModule moderationModule, ChatPlayer chatPlayer, String[][] placeholders) {
+    public void dispatchCommands(ModerationModule moderationModule, ChatPlayer chatPlayer, String[][] placeholders) {
         Server server = getServer();
 
         server.getScheduler().runTask(this, () -> {
@@ -120,9 +110,9 @@ public class ChatSentinel extends JavaPlugin {
         int maxWarns = moderationModule.getMaxWarns();
         float remainingTime = moduleManager.getCooldownModule().getRemainingTime(chatPlayer, message);
 
-        return new String[][]{
-            {"%player%", "%message%", "%warns%", "%maxwarns%", "%cooldown%"},
-            {playerName, message, String.valueOf(warns), String.valueOf(maxWarns), String.valueOf(remainingTime)}
+        return new String[][] {
+            { "%player%", "%message%", "%warns%", "%maxwarns%", "%cooldown%" },
+            { playerName, message, String.valueOf(warns), String.valueOf(maxWarns), String.valueOf(remainingTime) }
         };
     }
 
@@ -150,11 +140,12 @@ public class ChatSentinel extends JavaPlugin {
         for (ModerationModule moderationModule : moderationModulesToProcess) {
             // Do not check normal commands (unless syntax or cooldown)
             boolean isCommand = originalMessage.startsWith("/");
-            boolean isNormalCommand = ChatSentinel.getInstance().getModuleManager().getGeneralModule().isCommand(originalMessage);
+            boolean isNormalCommand = ChatSentinel.getInstance().getModuleManager().getGeneralModule()
+                    .isCommand(originalMessage);
             if (!(moderationModule instanceof SyntaxModerationModule) &&
-                !(moderationModule instanceof CooldownModerationModule) &&
-                isCommand &&
-                !isNormalCommand) {
+                    !(moderationModule instanceof CooldownModerationModule) &&
+                    isCommand &&
+                    !isNormalCommand) {
                 continue;
             }
 
@@ -175,14 +166,15 @@ public class ChatSentinel extends JavaPlugin {
                 chatPlayer.addWarn(moderationModule);
 
                 // Get placeholders
-                String[][] placeholders = ChatSentinel.getInstance().getPlaceholders(player, chatPlayer, moderationModule, message);
+                String[][] placeholders = ChatSentinel.getInstance().getPlaceholders(player, chatPlayer, moderationModule,
+                        message);
 
                 // Send warning
                 ChatSentinel.getInstance().sendWarning(placeholders, moderationModule, player, lang);
 
                 // Send punishment commands
                 if (moderationModule.hasExceededWarns(chatPlayer)) {
-                    ChatSentinel.getInstance().dispatchCommmands(moderationModule, chatPlayer, placeholders);
+                    ChatSentinel.getInstance().dispatchCommands(moderationModule, chatPlayer, placeholders);
                 }
 
                 // Send admin notification
@@ -192,9 +184,8 @@ public class ChatSentinel extends JavaPlugin {
                 finalResult.setMessage(result.getMessage());
 
                 // Update hide
-                if (result.isHide()) {
+                if (result.isHide())
                     finalResult.setHide(true);
-                }
 
                 // Update cancelled
                 if (result.isCancelled()) {
