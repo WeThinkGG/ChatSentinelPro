@@ -1,6 +1,7 @@
 package dev._2lstudios.chatsentinel.bukkit.utils;
 
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class BlockerUtil {
@@ -16,7 +17,7 @@ public class BlockerUtil {
 
     public boolean containsBlockedDomain(String message) {
         String lowerMessage = message.toLowerCase();
-        var matcher = urlPattern.matcher(lowerMessage);
+        Matcher matcher = urlPattern.matcher(lowerMessage);
         while (matcher.find()) {
             String domain = matcher.group();
             for (String blockedDomain : blockedDomains) {
