@@ -6,8 +6,8 @@
     <packaging>jar</packaging>
 
     <name>ChatSentinelPro</name>
-    <description>Morden Chat, Morden Results</description>
-    <version>1.0.</version>
+    <description>Modern Chat, Modern Results</description>
+    <version>1.0.0</version> <!-- Fixed version format -->
 
     <properties>
         <id>chatsentinel</id>
@@ -41,7 +41,6 @@
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-api</artifactId>
             <version>1.19-R0.1-SNAPSHOT</version>
-            <type>jar</type>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -54,14 +53,14 @@
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>3.1.0</version> 
+            <version>3.1.0</version>
+            <scope>compile</scope> <!-- Ensure it is included in the JAR -->
         </dependency>
     </dependencies>
 
     <build>
         <finalName>${project.artifactId}</finalName>
         <sourceDirectory>src/main/java</sourceDirectory>
-        <defaultGoal>clean install</defaultGoal>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
