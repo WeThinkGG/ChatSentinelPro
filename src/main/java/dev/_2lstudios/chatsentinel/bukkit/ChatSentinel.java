@@ -23,7 +23,8 @@ import dev._2lstudios.chatsentinel.shared.modules.GeneralModule;
 import dev._2lstudios.chatsentinel.shared.modules.MessagesModule;
 import dev._2lstudios.chatsentinel.shared.modules.ModerationModule;
 import dev._2lstudios.chatsentinel.shared.modules.SyntaxModerationModule;
-import org.bstats.bukkit.Metrics; // Import bStats Metrics class
+import org.bstats.bukkit.Metrics;
+import org.bstats.bukkit.Metrics.SimpleChart;
 
 public class ChatSentinel extends JavaPlugin {
     // Static instance
