@@ -36,7 +36,7 @@ blacklist:
 
   # Show a fake message to the player to make him think his message was sent.
   # This doesnt work if the plugin is on BungeeCord.
-  fake_message: true
+  fake_message: false
 
   # Hide the words the player wrote with a ***
   censorship:
