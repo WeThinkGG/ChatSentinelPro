@@ -11,7 +11,7 @@ general:
   sanitize-names: true
 
   # Filter and remove non-latin characters from all messages.
-  filter-other: true
+  filter-other: false
 
   # Commands that will be treated as normal messages
   commands:
@@ -36,7 +36,7 @@ blacklist:
 
   # Show a fake message to the player to make him think his message was sent.
   # This doesnt work if the plugin is on BungeeCord.
-  fake_message: false
+  fake_message: true
 
   # Hide the words the player wrote with a ***
   censorship:
