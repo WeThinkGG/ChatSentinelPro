@@ -1,4 +1,3 @@
-# This plugin uses Regex for checking messages.
 expressions:
   # IPs and Websites
   - ([\d]{1,3}[., ]{1,}){3,}([\d]{1,3})
@@ -31,7 +30,134 @@ expressions:
   - fuck(er)?
   - loser
   - pussy
-  # Miscelaneous
+  - shit
+  - prick
+  - wanker
+  - bastard
+  - slut
+  - whore
+  - nigger
+  - faggot
+  - queer
+  - cocksucker
+  - motherfucker
+  - twat
+  - tosser
+  - knobhead
+  - git
+  - scumbag
+  - wanker
+  - clit
+  - bellend
+  - douche
+  - dipshit
+  - shithead
+  - asswipe
+  - cumbag
+  - buttplug
+  - assclown
+  - cock
+  - bimbo
+  - fart
+  - skank
+  - fatass
+  - prick
+  - jerk
+  - knobjockey
+  - moron
+  - imbecile
+  - idiot
+  - dimwit
+  - nincompoop
+  - pillock
+  - tosser
+  - git
+  - turd
+  - twat
+  - dork
+  - twat
+  - pussy
+  - bum
+  - sod
+  - sodomite
+  - cocksucker
+  - faggot
+  - mole
+  - shithead
+  - wanker
+  - whore
+  - ass
+  # Hinglish
+  - chutiya
+  - behenchod
+  - madarchod
+  - gandu
+  - harami
+  - launda
+  - bhosdike
+  - chudail
+  - chud
+  - gandi
+  - kamina
+  - saala
+  - kameena
+  - lanat
+  - bhosdika
+  - sadi
+  - pichhwarah
+  - gandu
+  - maaka
+  - jhakaas
+  - chashmish
+  - kaamchor
+  - jhant
+  - bechara
+  - jhandu
+  - kamzor
+  - ganda
+  - bechari
+  - gandi
+  - paagal
+  - jhootha
+  - dhokebaaz
+  - chapri
+  - chindi
+  - ullu
+  - launda
+  - kaand
+  - lauda
+  - khota
+  - gaddha
+  - madar
+  - saala
+  - haramkhor
+  - chooha
+  - chindi
+  - bechaara
+  - chaalu
+  - chakkar
+  - laand
+  - goli
+  - kameeni
+  - gandi
+  - lund
+  - jhatka
+  - tokar
+  - bhosda
+  - choti
+  - kothi
+  - bhai
+  - ganda
+  - bhen
+  - chakkar
+  - behen
+  - haramzada
+  - jangal
+  - kiya
+  - ullu
+  - saala
+  - badtameez
+  # Miscellaneous
   - (LiquidBounce)([ ])(Hacked)([ ])(Client)([ ])(by)([ ])(CCBlueX)
   - fun
   - com
@@ -41,3 +167,10 @@ expressions:
   - gg
   - []
   - https
+  # Allowing only default fonts for specific words
+  - '^[^\x00-\x7F]*play[^\x00-\x7F]*$' # Block other fonts for 'play'
+  - '^[^\x00-\x7F]*mc[^\x00-\x7F]*$' # Block other fonts for 'mc'
+  - '^[^\x00-\x7F]*fun[^\x00-\x7F]*$' # Block other fonts for 'fun'
+  - '^[^a-zA-Z]*[pP][lL][aA][yY][^a-zA-Z]*$' # Block small text variants for 'play'
+  - '^[^a-zA-Z]*[mM][cC][^a-zA-Z]*$' # Block small text variants for 'mc'
+  - '^[^a-zA-Z]*[fF][uU][nN][^a-zA-Z]*$' # Block small text variants for 'fun'
